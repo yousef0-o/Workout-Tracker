@@ -1,18 +1,18 @@
-# Workout Tracker API 🏋️‍♂️
+# Workout Tracker API
 
 A production-grade RESTful backend API for a Workout Tracker application built with **Node.js**, **TypeScript**, **Express.js**, **Prisma ORM**, and **SQLite**. The system includes **JWT authentication**, **relational database modeling**, **data seeding**, **workout planning & scheduling**, **progress/volume analytics & reporting**, a **comprehensive unit & integration test suite (Vitest + Supertest)**, and **interactive OpenAPI 3.0 (Swagger) documentation**.
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-- **🔐 User Authentication & Authorization**:
+- **User Authentication & Authorization**:
   - Secure registration & login with password hashing via `bcryptjs` (salt rounds: 10).
   - Stateless JSON Web Tokens (JWT) bearer authentication.
   - Strict user data isolation (users only have access to their own workouts and custom exercises).
   - Profile retrieval & logout flow.
 
-- **📚 Exercise Catalog & Data Seeder**:
+- **Exercise Catalog & Data Seeder**:
   - Pre-seeded database with 36+ popular standard exercises covering all major muscle groups and categories.
   - Categorization: `STRENGTH`, `CARDIO`, `FLEXIBILITY`, `HIIT`, `CALISTHENICS`.
   - Muscle Groups: `CHEST`, `BACK`, `LEGS`, `SHOULDERS`, `ARMS`, `CORE`, `FULL_BODY`.
@@ -20,7 +20,7 @@ A production-grade RESTful backend API for a Workout Tracker application built w
   - Filtering by category, muscle group, equipment, full-text search, and pagination.
   - Custom exercise creation for users.
 
-- **📅 Workout Management & Scheduling**:
+- **Workout Management & Scheduling**:
   - Create workout plans composed of multiple exercises, with configurable target sets, target reps, target weight, duration, and rest intervals.
   - Schedule workouts for specific future dates and times (`scheduledAt`).
   - Manage workout lifecycle status: `SCHEDULED`, `IN_PROGRESS`, `COMPLETED`, `CANCELLED`.
@@ -28,22 +28,22 @@ A production-grade RESTful backend API for a Workout Tracker application built w
   - Full CRUD operations with cascade deletion for nested sets and comments.
   - Add workout comments and post-workout reflection notes.
 
-- **📊 Progress Tracking & Analytics Engine**:
+- **Progress Tracking & Analytics Engine**:
   - **Summary Report (`/api/reports/summary`)**: Total workouts, completion rate, total volume in kg (`reps × weight`), total duration in minutes, sets, reps, active daily streak, and distribution breakdowns by category and muscle group.
   - **Exercise Progress (`/api/reports/exercise-progress/:exerciseId`)**: Historical performance tracking, session max weight, total volume per session, and estimated 1-Rep Max (1RM) using Epley's formula:
     $$\text{1RM} = \text{weight} \times \left(1 + \frac{\text{reps}}{30}\right)$$
   - **Volume Trends (`/api/reports/volume-trends`)**: Aggregate training volume and frequency trends grouped by day, week, or month.
 
-- **📑 OpenAPI 3.0 / Swagger Interactive Docs**:
+- **OpenAPI 3.0 / Swagger Interactive Docs**:
   - Interactive UI hosted at `http://localhost:5000/api/docs`.
   - Raw JSON OpenAPI specification at `http://localhost:5000/api/docs.json`.
 
-- **🧪 Robust Automated Test Suite**:
+- **Robust Automated Test Suite**:
   - 37 unit and integration tests using Vitest and Supertest covering all endpoints, authentication, validation errors, edge cases, and user isolation.
 
 ---
 
-## 🏗️ Architecture & Database Schema
+## Architecture & Database Schema
 
 ### Entity-Relationship Diagram
 
@@ -127,7 +127,7 @@ erDiagram
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Prerequisites
 - **Node.js** (v18 or v24+ recommended)
@@ -176,7 +176,7 @@ Server will be running at `http://localhost:5000`.
 
 ---
 
-## 🧪 Running Tests
+## Running Tests
 
 Execute the automated test suite with Vitest:
 ```bash
@@ -185,9 +185,9 @@ npm run test
 
 ---
 
-## 📖 API Endpoints Reference
+## API Endpoints Reference
 
-### 🔐 Authentication (`/api/auth`)
+### Authentication (`/api/auth`)
 
 | Method | Endpoint | Description | Auth Required |
 |---|---|---|---|
@@ -219,7 +219,7 @@ curl -X POST http://localhost:5000/api/auth/login \
 
 ---
 
-### 🏋️ Exercises (`/api/exercises`)
+### Exercises (`/api/exercises`)
 
 | Method | Endpoint | Description | Auth Required |
 |---|---|---|---|
@@ -248,7 +248,7 @@ curl -X POST http://localhost:5000/api/exercises \
 
 ---
 
-### 📅 Workout Plans & Scheduling (`/api/workouts`)
+### Workout Plans & Scheduling (`/api/workouts`)
 
 | Method | Endpoint | Description | Auth Required |
 |---|---|---|---|
@@ -304,7 +304,7 @@ curl -X PATCH http://localhost:5000/api/workouts/<WORKOUT_UUID>/status \
 
 ---
 
-### 📊 Reports & Analytics (`/api/reports`)
+### Reports & Analytics (`/api/reports`)
 
 | Method | Endpoint | Description | Auth Required |
 |---|---|---|---|
@@ -356,7 +356,7 @@ curl -X GET http://localhost:5000/api/reports/summary \
 
 ---
 
-## 📚 Interactive OpenAPI Documentation
+## Interactive OpenAPI Documentation
 
 The API includes full interactive Swagger documentation. Once the server is running, visit:
 - **Swagger UI**: [`http://localhost:5000/api/docs`](http://localhost:5000/api/docs)
@@ -364,7 +364,7 @@ The API includes full interactive Swagger documentation. Once the server is runn
 
 ---
 
-## 🛡️ Security & Quality Best Practices
+## Security & Quality Best Practices
 
 1. **Password Hashing**: `bcryptjs` with salt round factor 10 ensures brute-force resistance.
 2. **Stateless JWT Tokens**: Tokens signed with HS256 algorithm and configured with configurable expiration.
