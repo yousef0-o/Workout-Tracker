@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  passwordHash    String
+  name            String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  workouts        Workout[]
+  customExercises Exercise[]
+  comments        WorkoutComment[]
+
+  @@map("users")
+}
+
+model Exercise {
+  id               String            @id @default(uuid())
+  name             String            @unique
+  description      String
+  category         String            // STRENGTH, CARDIO, FLEXIBILITY, HIIT, CALISTHENICS
+  muscleGroup      String            // CHEST, BACK, LEGS, SHOULDERS, ARMS, CORE, FULL_BODY
+  equipment        String            @default("BODYWEIGHT") // BARBELL, DUMBBELL, MACHINE, BODYWEIGHT, CABLE, KETTLEBELL, OTHER
+  isCustom         Boolean           @default(false)
+  createdById      String?
+  createdBy        User?             @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  workoutExercises WorkoutExercise[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@index([category])
+  @@index([muscleGroup])
+  @@map("exercises")
+}
+
+model Workout {
+  id              String            @id @default(uuid())
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  description     String?
+  status          String            @default("SCHEDULED") // SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED
+  scheduledAt     DateTime
+  completedAt     DateTime?
+  durationMinutes Int?
+  notes           String?
+  exercises       WorkoutExercise[]
+  comments        WorkoutComment[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([userId])
+  @@index([scheduledAt])
+  @@index([status])
+  @@map("workouts")
+}
+
+model WorkoutExercise {
+  id                String        @id @default(uuid())
+  workoutId         String
+  workout           Workout       @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  exerciseId        String
+  exercise          Exercise      @relation(fields: [exerciseId], references: [id], onDelete: Restrict)
+  orderIndex        Int           @default(0)
+  targetSets        Int           @default(3)
+  targetReps        Int?          @default(10)
+  targetWeightKg    Float?        @default(0)
+  targetDurationSec Int?
+  restSeconds       Int?          @default(60)
+  notes             String?
+  sets              ExerciseSet[]
+
+  @@index([workoutId])
+  @@index([exerciseId])
+  @@map("workout_exercises")
+}
+
+model ExerciseSet {
+  id                String          @id @default(uuid())
+  workoutExerciseId String
+  workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id], onDelete: Cascade)
+  setNumber         Int
+  reps              Int             @default(0)
+  weightKg          Float           @default(0)
+  durationSec       Int?
+  isCompleted       Boolean         @default(true)
+
+  @@index([workoutExerciseId])
+  @@map("exercise_sets")
+}
+
+model WorkoutComment {
+  id        String   @id @default(uuid())
+  workoutId String
+  workout   Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime @default(now())
+
+  @@index([workoutId])
+  @@index([userId])
+  @@map("workout_comments")
+}
